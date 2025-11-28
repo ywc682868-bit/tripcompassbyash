@@ -145,15 +145,7 @@
 
         window.App = (function() {
             const appId = 'my-trip-app';
-            const firebaseConfig = {
-  apiKey: "AIzaSyCr90WAfj0WxrWaFVa0IPN_vVUFdoiOUeY",
-  authDomain: "travel-compass-314e8.firebaseapp.com",
-  projectId: "travel-compass-314e8",
-  storageBucket: "travel-compass-314e8.firebasestorage.app",
-  messagingSenderId: "1095878291152",
-  appId: "1:1095878291152:web:e664c9454b260d7b3478d5",
-  measurementId: "G-HCYRBD0G55"
-};
+            const firebaseConfig = { apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28", authDomain: "mytravelplanner-36283.firebaseapp.com", projectId: "mytravelplanner-36283", storageBucket: "mytravelplanner-36283.appspot.com", messagingSenderId: "86504733738", appId: "1:86504733738:web:5167a6a795eb2066f272d" };
             
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
@@ -173,6 +165,7 @@
             let currentListTabId = null; 
             let pendingTripSwitchId = null; 
 
+            // --- 基礎工具 ---
             function formatDateForHeader(date) { const year = String(date.getFullYear()).slice(-2); const month = String(date.getMonth() + 1).padStart(2, '0'); const day = String(date.getDate()).padStart(2, '0'); const dayOfWeekMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; return `${year}.${month}.${day} ${dayOfWeekMap[date.getDay()]}`; }
             function dateDiffInDays(date2, date1) { return Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)); }
             function getDateFromDayId(trip, dayId) { if (!trip || !trip.startDate) return null; const d = new Date(trip.startDate); d.setDate(d.getDate() + (parseInt(dayId.replace('Day ', '')) - 1)); return d; }
@@ -181,6 +174,7 @@
             function formatCurrency(value) { if (typeof value !== 'number') value = parseFloat(value); if (isNaN(value) || value === 0) return '0'; return value.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1'); }
             async function fetchExchangeRate(baseCurrency) { const fallback = { 'USD': 32.5, 'JPY': 0.215, 'KRW': 0.023, 'GBP': 41.2, 'CNY': 4.5, 'TWD': 1 }; if (!baseCurrency || baseCurrency === 'TWD') return 1; try { const r = await fetch(`https://open.er-api.com/v6/latest/${baseCurrency}`); const d = await r.json(); if (d && d.rates && d.rates.TWD) return d.rates.TWD; } catch (e) {} return fallback[baseCurrency] || 1; }
 
+            // --- 核心更新 ---
             async function updateHeaderInfo() {
                 const trip = tripData[currentTripId]; if (!trip) return;
                 const config = COUNTRY_CONFIG[trip.country || 'TW'] || COUNTRY_CONFIG['TW'];
@@ -202,6 +196,7 @@
                 checkAndCreateDefaultLists(tripId); 
             }
 
+            // --- 複製行程 (救援) ---
             async function cloneAndSwitchTrip() {
                 if (!currentTripId || !tripData[currentTripId]) return;
                 const oldTrip = tripData[currentTripId];
@@ -581,6 +576,7 @@
                              delBtnDesktop.onclick = (e) => { e.stopPropagation(); deleteListItem(listData, idx); };
                              c.appendChild(delBtnDesktop);
 
+                             // 修正：Container 設定右內距，把內容往左推
                              c.style.paddingRight = "30px"; 
 
                              c.style.display = 'grid'; 
@@ -603,6 +599,7 @@
                              descInput.onchange = (e) => updateListItem(listData, idx, {desc: e.target.value});
                              midCol.appendChild(nameInput); midCol.appendChild(descInput);
                              
+                             // 修正：地點欄位不再需要 margin-right
                              const locInput = document.createElement('textarea'); 
                              locInput.className = 'compact-input'; 
                              locInput.placeholder = '地點'; 
@@ -629,6 +626,7 @@
                 } catch(e) { }
             }
 
+            // 修改：刪除不需確認
             async function deleteListItem(l, i) { 
                 const ni=l.items.filter((_,x)=>x!==i); 
                 updateDoc(doc(db, `artifacts/${appId}/public/data/Trips/${currentTripId}/Lists/${l.id}`), {items:ni});
@@ -652,15 +650,18 @@
 
             function initApp() {
                 document.addEventListener('DOMContentLoaded', async () => {
+                    // 1. 立即設定初始匯率顯示文字，避免閃爍舊內容
                     document.getElementById('rate-display-label').textContent = '匯率 ≈ ...';
 
                     const app = initializeApp(firebaseConfig); db = getFirestore(app); auth = getAuth(app); 
                     const userCred = await signInAnonymously(auth); currentUser = userCred.user;
                     
+                    // 注入 CSS (控制購物清單電腦版刪除鈕及底部工具列 RWD)
                     const style = document.createElement('style');
                     style.innerHTML = `
                         @media (max-width: 500px) { 
                             .desktop-del-btn { display: none !important; } 
+                            /* 手機版底部工具列佈局修正 */
                             #currency-display-row { flex-wrap: nowrap !important; gap: 5px !important; }
                             #rate-display-container { width: auto !important; flex: 0 0 auto !important; border-right: none !important; }
                             #rate-display-label { font-size: 14px !important; white-space: nowrap !important; }
@@ -673,12 +674,12 @@
                     `;
                     document.head.appendChild(style);
 
+                    // 重寫 Add Schedule Modal HTML (注入 relative 和按鈕絕對定位)
                     const addScheduleModalContent = document.querySelector('#add-schedule-modal > div');
                     if(addScheduleModalContent) {
-                        addScheduleModalContent.style.position = 'relative'; 
+                        addScheduleModalContent.style.position = 'relative'; // 讓子元素絕對定位
                         addScheduleModalContent.innerHTML = `
-                            <h3 class="text-base font-bold mb-2 text-[#4A4B4D] pr-8 truncate">
-                                <span id="add-schedule-modal-title">新增行程</span>
+                            <h3 class="text-base font-bold mb-2 text-[#4A4B4D] pr-8 truncate"> <span id="add-schedule-modal-title">新增行程</span>
                             </h3>
                             <button id="modal-close-btn" class="absolute top-3 right-3 text-[#A9A9A9] hover:text-[#5F6368] text-2xl leading-none w-6 h-6 flex items-center justify-center">×</button>
                             <form id="add-schedule-form" class="space-y-2">
@@ -727,6 +728,7 @@
                         `;
                     }
 
+                    // 重寫設定 Modal HTML (三欄並排 + 刪除救援按鈕)
                     const settingsModalContent = document.querySelector('#settings-modal > div');
                     if (settingsModalContent) {
                         settingsModalContent.innerHTML = `
@@ -759,6 +761,7 @@
 
                     loadTripList();
 
+                    // UI Event Bindings
                     document.getElementById('trip-select').onchange = (e) => changeTrip(e.target.value);
                     document.getElementById('bar-calc-currency').onchange = calculateCurrency; document.getElementById('bar-calc-amount').oninput = calculateCurrency;
                     document.getElementById('center-add-btn').onclick = () => { if(!currentTripId) return alert('請先建計畫'); document.getElementById('add-schedule-form').reset(); editingScheduleId=null; document.getElementById('modal-delete-btn').style.display='none'; const t=tripData[currentTripId]; document.getElementById('form-date').value=getDateFromDayId(t, currentDayId).toISOString().split('T')[0]; document.getElementById('form-members-container').innerHTML=''; (t.members||[]).forEach(n=>addMemberInput(n)); if(!(t.members||[]).length){addMemberInput();addMemberInput();} document.getElementById('add-schedule-modal').style.display='flex'; };
