@@ -150,17 +150,25 @@
             </div>
         </div>
         <div class="relative flex justify-between items-end w-full pt-1 pb-1">
-             <button id="btn-lists" class="flex-1 flex flex-row items-center justify-center gap-1 text-[#888888] hover:text-[#7E92A1] py-1">
-                 <span class="text-base leading-none">📝</span><span class="text-[12px] font-bold leading-none">清單</span>
-             </button>
-             <button id="center-add-btn" class="prominent-integrated-btn">＋</button>
-             <button id="split-expense-btn" class="flex-1 flex flex-row items-center justify-center gap-1 text-[#888888] hover:text-[#8F9E8B] py-1">
-                 <span class="text-base leading-none">💰</span><span class="text-[12px] font-bold leading-none">花費</span>
-             </button>
-        </div>
-    </div>
+            
+            <button id="btn-lists" class="flex flex-col items-center justify-center gap-0.5 text-[#888888] hover:text-[#7E92A1] px-2 z-10">
+                 <span class="text-xl leading-none">📝</span>
+                 <span class="text-[10px] font-bold leading-none">清單</span>
+            </button>
 
-    <div id="add-schedule-modal" class="modal-overlay hidden">
+            <div class="absolute left-1/2 bottom-5 transform -translate-x-1/2 flex items-center bg-[#F4F6F8] pl-1.5 pr-4 py-1.5 rounded-full border border-white shadow-lg gap-3 z-20">
+                 <button id="center-add-btn" class="prominent-integrated-btn shadow-md hover:scale-105 transition-transform" style="margin: 0;">＋</button>
+                 
+                 <div class="w-[1px] h-4 bg-[#D1D5DB]"></div>
+
+                 <button id="split-expense-btn" class="flex flex-row items-center justify-center gap-1 text-[#5F6368] hover:text-[#8F9E8B]">
+                     <span class="text-base leading-none">💰</span>
+                     <span class="text-[11px] font-bold leading-none">花費</span>
+                 </button>
+            </div>
+
+            <div class="w-8"></div>
+        </div>    <div id="add-schedule-modal" class="modal-overlay hidden">
         <div class="bg-white rounded-xl shadow-2xl p-3 w-11/12 max-w-sm max-h-[90vh] overflow-y-auto relative"></div>
     </div>
     <div id="lists-modal" class="modal-overlay hidden"><div class="bg-white rounded-xl shadow-2xl p-4 w-11/12 max-w-sm h-[80vh] flex flex-col relative"><h3 class="text-base font-bold mb-2 flex justify-between items-center flex-shrink-0 text-[#4A4B4D]">清單<button id="lists-modal-close-btn" class="text-[#A9A9A9] hover:text-[#5F6368] text-xl leading-none">×</button></h3><div id="list-tabs" class="flex gap-1 border-b border-gray-100 mb-2 overflow-x-auto no-scrollbar flex-shrink-0"></div><div id="list-content" class="flex-grow overflow-y-auto flex flex-col relative"></div></div></div>
@@ -899,4 +907,5 @@
     </script>
 </body>
 </html>
+
 
