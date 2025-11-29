@@ -11,151 +11,149 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* --- 全域設定 --- */
-        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; margin: 0; padding: 0; color: #5F6368; overflow-x: hidden; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* --- 容器與佈局 --- */
-        #app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background-color: white; padding-top: 165px; padding-bottom: 140px; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
-        
-        /* --- Header 固定區 --- */
-        header { 
-            position: fixed; 
-            top: 0; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 100%; 
-            max-width: 500px; 
-            background-color: #ffffff; /* 純白背景 */
-            z-index: 50; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        #trip-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237E92A1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right center; background-repeat: no-repeat; background-size: 1.25em 1.25em; -webkit-appearance: none; appearance: none; background-color: transparent; font-weight: 800; color: #4A4B4D; border: none; padding-right: 1.5rem; cursor: pointer; }
-        #trip-select:focus { outline: none; }
-        #header-day-date-container { padding-bottom: 0px; margin-top: 8px; margin-bottom: 1px; line-height: 1.2; }
+    /* --- 全域設定 --- */
+    body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; margin: 0; padding: 0; color: #5F6368; overflow-x: hidden; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* --- 容器與佈局 --- */
+    #app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background-color: white; padding-top: 165px; padding-bottom: 140px; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    
+    /* --- Header 固定區 --- */
+    header { 
+        position: fixed; 
+        top: 0; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        width: 100%; 
+        max-width: 500px; 
+        background-color: #ffffff; /* 純白背景 */
+        z-index: 50; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    #trip-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237E92A1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right center; background-repeat: no-repeat; background-size: 1.25em 1.25em; -webkit-appearance: none; appearance: none; background-color: transparent; font-weight: 800; color: #4A4B4D; border: none; padding-right: 1.5rem; cursor: pointer; }
+    #trip-select:focus { outline: none; }
+    #header-day-date-container { padding-bottom: 0px; margin-top: 8px; margin-bottom: 1px; line-height: 1.2; }
 
-        /* --- Footer (底部工具列) --- */
-        #combined-bottom-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 480px; background-color: white; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); z-index: 50; display: flex; flex-direction: column; padding: 0.4rem 0.75rem 0.2rem 0.75rem; border-radius: 24px; border: 1px solid #f0f0f0; }
-        .prominent-integrated-btn { width: 30px; height: 30px; background-color: #7E92A1; border-radius: 50%; color: white; font-size: 18px; font-weight: 300; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: transform 0.1s; }
-        .prominent-integrated-btn:active { transform: scale(0.95); }
-        #rate-display-label { font-size: 0.85rem; font-weight: bold; color: #7E92A1; line-height: 20px; }
-        #bar-calc-result { font-size: 0.7rem; font-weight: bold; color: #7E92A1; }
+    /* --- Footer (底部工具列) --- */
+    #combined-bottom-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 480px; background-color: white; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); z-index: 50; display: flex; flex-direction: column; padding: 0.4rem 0.75rem 0.2rem 0.75rem; border-radius: 24px; border: 1px solid #f0f0f0; }
+    .prominent-integrated-btn { width: 30px; height: 30px; background-color: #7E92A1; border-radius: 50%; color: white; font-size: 18px; font-weight: 300; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: transform 0.1s; }
+    .prominent-integrated-btn:active { transform: scale(0.95); }
+    #rate-display-label { font-size: 0.85rem; font-weight: bold; color: #7E92A1; line-height: 20px; }
+    #bar-calc-result { font-size: 0.7rem; font-weight: bold; color: #7E92A1; }
 
-        /* --- 行程卡片 (Trip Card) & 串連線 (Timeline) --- */
-        
-        /* 外層容器：建立堆疊環境 */
-        .trip-card { 
-            width: 100%; 
-            margin-bottom: 0.75rem; 
-            position: relative; 
-            min-height: 85px; 
-            display: flex; 
-            z-index: 0; /* 關鍵：建立局部堆疊 context，防止子元素跑到父層背景下 */
-        }
+    /* --- 行程卡片 (Trip Card) & 串連線 (Timeline) --- */
+    /* 外層容器：負責定位與繪製串連線 */
+    .trip-card { 
+        width: 100%; 
+        margin-bottom: 0.75rem; 
+        position: relative; 
+        min-height: 85px; 
+        display: flex; 
+        z-index: 0; /* 建立堆疊環境，確保子元素的 z-index -1 不會跑到 body 背景後面 */
+    }
 
-        /* 串連線 (Pseudo-element) - 莫蘭迪咖啡色 */
-        .trip-card::before {
-            content: '';
-            position: absolute;
-            left: 28px; /* 56px (w-14) 的一半，對齊 icon 中心 */
-            top: -20px; 
-            bottom: -20px; 
-            width: 2px;
-            /* 調整顏色為莫蘭迪咖啡色 (Morandi Coffee) */
-            background-color: #998A7E; 
-            z-index: -1; /* 設為 -1，確保在 visual-wrapper 的下面 */
-            transform: translateX(-50%);
-        }
-        
-        /* 第一張卡片的線不要向上凸出 */
-        .trip-card:first-child::before { top: 42px; }
-        /* 最後一張卡片的線不要向下凸出 */
-        .trip-card:last-child::before { bottom: auto; height: 100%; }
+    /* 串連線 (Pseudo-element) - 修正：改為莫蘭迪咖啡色，並保持最下層 */
+    .trip-card::before {
+        content: '';
+        position: absolute;
+        left: 28px; /* 56px (w-14) 的一半 */
+        /* --- START OF LENGTH MODIFICATION --- */
+        top: -6px;        /* 向上延伸縮短為 6px (原本是 -20px) */
+        bottom: -6px;     /* 向下延伸縮短為 6px (原本是 -20px) */
+        /* --- END OF LENGTH MODIFICATION --- */
+        width: 2px;
+        background-color: #9C8B74; /* 莫蘭迪咖啡色 */
+        z-index: -1; 
+        transform: translateX(-50%);
+    }
+    /* 第一張卡片的線不要向上凸出 - 保持不變 */
+    .trip-card:first-child::before { top: 42px; } /* 42px 是卡片高度的一半，確保線從中心點往下拉 */
+    /* 最後一張卡片的線不要向下凸出 - 保持不變 */
+    .trip-card:last-child::before { bottom: auto; height: 100%; }
+    /* 視覺包裹層：不透明白底，遮住中間的線，只讓線在空隙露出 */
+    .trip-card-visual-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.75rem; /* rounded-xl */
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+        background-color: white; /* 必須是實色背景 */
+        z-index: 10; /* 確保在線的上方 */
+    }
 
-        /* 視覺包裹層：白色背景，負責遮擋中間的線 */
-        .trip-card-visual-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 0.75rem; /* rounded-xl */
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            background-color: white; /* 必須有背景色才能遮住線 */
-            z-index: 1; /* 比線條 (-1) 高 */
-        }
+    .swipe-item-container { position: relative; overflow: hidden; border-radius: 0.375rem; margin-bottom: 0.5rem; touch-action: pan-y; }
+    
+    .swipe-item-delete-bg { 
+        position: absolute; top: 0; bottom: 0; right: 0; width: 140px; 
+        display: flex; align-items: center; justify-content: flex-end; 
+        z-index: 0; 
+    }
+    
+    .swipe-item-content { 
+        position: relative; z-index: 10; background-color: white; 
+        transition: transform 0.2s ease-out; transform: translateX(0); 
+        width: 100%; display: flex; align-items: stretch; 
+    }
+    
+    .card-right-col { 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: flex-start; 
+        align-items: flex-start; 
+        gap: 8px; 
+        width: 95px; min-width: 95px; max-width: 95px; flex: 0 0 95px;
+        border-left: none; padding-left: 6px; padding-bottom: 0.25rem; padding-top: 12px; position: relative; 
+    }
+    .card-right-col::before {
+        content: ''; position: absolute; left: 0; top: 8%; bottom: 8%; width: 1px; background-color: #C0C0C0;
+    }
 
-        .swipe-item-container { position: relative; overflow: hidden; border-radius: 0.375rem; margin-bottom: 0.5rem; touch-action: pan-y; }
+    .info-block-content { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end; gap: 4px; width: 100%; }
+    
+    /* 按鈕靠左緊鄰，gap: 2px */
+    .card-static-actions { 
+        display: none !important; 
+        width: 100%; 
+        justify-content: flex-start !important; 
+        gap: 2px; 
+        padding: 0; 
+        margin: 0; 
+    }
+    
+    /* --- RWD Adjustments --- */
+    @media (min-width: 501px) {
+        .swipe-item-delete-bg { display: none !important; }
+        .trip-card .swipe-item-content { cursor: pointer; } 
+        .card-static-actions { display: flex !important; } 
+        .trip-card .content-text-block { margin-top: 5px; }
+        .desktop-del-btn { display: block !important; }
+    }
+    @media (max-width: 500px) {
+        .trip-card .content-text-block { margin-top: 8px; }
+        .desktop-del-btn { display: none !important; } 
         
-        .swipe-item-delete-bg { 
-            position: absolute; top: 0; bottom: 0; right: 0; width: 140px; 
-            display: flex; align-items: center; justify-content: flex-end; 
-            z-index: 0; 
-        }
-        
-        .swipe-item-content { 
-            position: relative; z-index: 10; background-color: white; 
-            transition: transform 0.2s ease-out; transform: translateX(0); 
-            width: 100%; display: flex; align-items: stretch; 
-        }
-        
-        .card-right-col { 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-start; 
-            align-items: flex-start; 
-            gap: 8px; 
-            width: 95px; min-width: 95px; max-width: 95px; flex: 0 0 95px;
-            border-left: none; padding-left: 6px; padding-bottom: 0.25rem; padding-top: 12px; position: relative; 
-        }
-        .card-right-col::before {
-            content: ''; position: absolute; left: 0; top: 8%; bottom: 8%; width: 1px; background-color: #C0C0C0;
-        }
+        #currency-display-row { flex-wrap: nowrap !important; gap: 5px !important; }
+        #rate-display-container { width: auto !important; flex: 0 0 auto !important; border-right: none !important; }
+        #rate-display-label { font-size: 14px !important; white-space: nowrap !important; }
+        #currency-display-row > div:last-child { width: auto !important; flex: 1 1 auto !important; justify-content: flex-end !important; }
+        #bar-calc-amount { width: 50px !important; }
+        #bar-calc-currency { width: 45px !important; }
+        #btn-lists span:nth-child(2), #split-expense-btn span:nth-child(2) { font-size: 14px !important; }
+    }
 
-        .info-block-content { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end; gap: 4px; width: 100%; }
-        
-        /* 按鈕靠左緊鄰，gap: 2px */
-        .card-static-actions { 
-            display: none !important; 
-            width: 100%; 
-            justify-content: flex-start !important; 
-            gap: 2px; 
-            padding: 0; 
-            margin: 0; 
-        }
-        
-        /* --- RWD Adjustments --- */
-        @media (min-width: 501px) {
-            .swipe-item-delete-bg { display: none !important; }
-            .trip-card .swipe-item-content { cursor: pointer; } 
-            .card-static-actions { display: flex !important; } 
-            .trip-card .content-text-block { margin-top: 5px; }
-            .desktop-del-btn { display: block !important; }
-        }
-        @media (max-width: 500px) {
-            .trip-card .content-text-block { margin-top: 8px; }
-            .desktop-del-btn { display: none !important; } 
-            
-            #currency-display-row { flex-wrap: nowrap !important; gap: 5px !important; }
-            #rate-display-container { width: auto !important; flex: 0 0 auto !important; border-right: none !important; }
-            #rate-display-label { font-size: 14px !important; white-space: nowrap !important; }
-            #currency-display-row > div:last-child { width: auto !important; flex: 1 1 auto !important; justify-content: flex-end !important; }
-            #bar-calc-amount { width: 50px !important; }
-            #bar-calc-currency { width: 45px !important; }
-            #btn-lists span:nth-child(2), #split-expense-btn span:nth-child(2) { font-size: 14px !important; }
-        }
-
-        /* --- Modals & Lists --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(95, 99, 104, 0.4); display: flex; justify-content: center; align-items: center; z-index: 100; }
-        .compact-input { padding: 0 0.3rem; font-size: 0.7rem; height: 28px; line-height: 28px; color: #5F6368; border-color: #E0E0E0; border-width: 1px; box-sizing: border-box; }
-        .compact-input:focus { border-color: #7E92A1; outline: none; ring: 1px solid #7E92A1; }
-        .compact-label { font-size: 0.7rem; color: #7E92A1; font-weight: 700; margin-bottom: 0; }
-        input[type="time"], input[type="date"] { text-align: center; }
-        .list-tab-active { border-bottom: 2px solid #7E92A1; color: #7E92A1; font-weight: bold; }
-        .list-tab-inactive { color: #A9A9A9; }
-        .shopping-img-box { width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 6px; overflow: hidden; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px dashed #ccc; position: relative; }
-        .shopping-img-box img { width: 100%; height: 100%; object-fit: cover; }
-    </style>
+    /* --- Modals & Lists --- */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(95, 99, 104, 0.4); display: flex; justify-content: center; align-items: center; z-index: 100; }
+    .compact-input { padding: 0 0.3rem; font-size: 0.7rem; height: 28px; line-height: 28px; color: #5F6368; border-color: #E0E0E0; border-width: 1px; box-sizing: border-box; }
+    .compact-input:focus { border-color: #7E92A1; outline: none; ring: 1px solid #7E92A1; }
+    .compact-label { font-size: 0.7rem; color: #7E92A1; font-weight: 700; margin-bottom: 0; }
+    input[type="time"], input[type="date"] { text-align: center; }
+    .list-tab-active { border-bottom: 2px solid #7E92A1; color: #7E92A1; font-weight: bold; }
+    .list-tab-inactive { color: #A9A9A9; }
+    .shopping-img-box { width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 6px; overflow: hidden; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px dashed #ccc; position: relative; }
+    .shopping-img-box img { width: 100%; height: 100%; object-fit: cover; }
+</style>
 </head>
 
 <body>
@@ -244,7 +242,15 @@
 
         window.App = (function() {
             const appId = 'my-trip-app';
-            const firebaseConfig = { apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28", authDomain: "mytravelplanner-36283.firebaseapp.com", projectId: "mytravelplanner-36283", storageBucket: "mytravelplanner-36283.appspot.com", messagingSenderId: "86504733738", appId: "1:86504733738:web:5167a6a795eb2066f272d" };
+            const firebaseConfig = {
+  apiKey: "AIzaSyCr90WAfj0WxrWaFVa0IPN_vVUFdoiOUeY",
+  authDomain: "travel-compass-314e8.firebaseapp.com",
+  projectId: "travel-compass-314e8",
+  storageBucket: "travel-compass-314e8.firebasestorage.app",
+  messagingSenderId: "1095878291152",
+  appId: "1:1095878291152:web:e664c9454b260d7b3478d5",
+  measurementId: "G-HCYRBD0G55"
+};
             
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
@@ -960,3 +966,7 @@
     </script>
 </body>
 </html>
+
+
+
+
