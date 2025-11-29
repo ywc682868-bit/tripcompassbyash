@@ -52,22 +52,22 @@
             position: relative; 
         }
         
-        /* 置中的垂直分隔線 (top:0, bottom:0 拉到最長) */
+        /* 置中的垂直分隔線 */
         .card-right-col::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 0;    /* 修改：頂端 (最長) */
-            bottom: 0; /* 修改：底端 (最長) */
+            top: 0; 
+            bottom: 0;
             width: 1px;
-            background-color: #C0C0C0; /* 深灰色，確保可見 */
+            background-color: #C0C0C0;
         }
 
-        /* 修改：增加間距 gap: 10px */
+        /* 增加間距 gap: 10px */
         .info-block-content { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 10px; height: 100%; width: 100%; margin-top: 4px; }
         .info-block-content > div { justify-content: flex-start !important; }
         
-        /* 強制在手機版隱藏右側按鈕 */
+        /* 強制在手機版隱藏右側按鈕，使用 !important 確保生效 */
         .card-static-actions { display: none !important; gap: 8px; margin-bottom: 4px; padding-left: 0.5rem; width: 100%; justify-content: flex-start; }
         
         @media (min-width: 501px) {
@@ -300,8 +300,10 @@
 
                 const content = document.createElement('div');
                 content.className = 'swipe-item-content flex w-full bg-white overflow-hidden relative items-stretch h-full z-10';
+                
+                // ⚠️ 關鍵修正：直接在 element 上強制加入 border-radius 樣式，確保圓角顯示正確
                 content.innerHTML = `
-                    <div class="${config.bg} w-14 flex-none flex flex-col items-center justify-start gap-2 text-white relative z-10 h-full py-3 rounded-l-xl">
+                    <div class="${config.bg} w-14 flex-none flex flex-col items-center justify-start gap-2 text-white relative z-10 h-full py-3" style="border-top-left-radius: 0.75rem; border-bottom-left-radius: 0.75rem;">
                         <span class="text-[10px] font-bold tracking-tight leading-none">${schedule.Time}</span>
                         <span class="text-2xl leading-none mb-1">${style.icon}</span>
                         <span class="text-[9px] font-medium opacity-90 leading-none">${CATEGORY_NAMES[schedule.Type] || schedule.Type}</span>
