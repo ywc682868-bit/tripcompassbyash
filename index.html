@@ -135,11 +135,11 @@
     </div>
 
     <div id="combined-bottom-bar">
-        <div id="currency-display-row" class="flex justify-between w-full border-b border-gray-100 pb-3 mb-2 mt-1.5">
-            <div id="rate-display-container" class="w-1/2 flex items-center justify-start border-r border-gray-100 pl-1">
+        <div id="currency-display-row" class="flex w-full border-b border-gray-100 pb-2 mb-1 mt-1.5">
+            <div id="rate-display-container" class="w-1/2 flex items-center justify-center border-r border-gray-100">
                 <span id="rate-display-label">匯率 ≈ ...</span> 
             </div>
-            <div class="w-1/2 flex items-center justify-start gap-0.5 pl-2">
+            <div class="w-1/2 flex items-center justify-start gap-0.5 pl-3">
                 <select id="bar-calc-currency" class="bg-gray-50 border border-[#E0E0E0] rounded p-0.5 text-[10px] font-bold text-[#5F6368] h-6 w-10 text-center appearance-none cursor-pointer">
                     <option value="USD">USD</option><option value="JPY">JPY</option><option value="KRW">KRW</option><option value="CNY">CNY</option><option value="GBP">GBP</option>
                 </select>
@@ -150,24 +150,22 @@
             </div>
         </div>
 
-        <div class="relative flex justify-between items-end w-full pt-1 pb-1">
-            
-            <button id="btn-lists" class="flex flex-col items-center justify-center gap-0.5 text-[#888888] hover:text-[#7E92A1] px-2 z-10">
+        <div class="flex justify-between items-center w-full px-2 py-1.5">
+             <button id="btn-lists" class="flex-1 flex flex-row items-center justify-center gap-2 text-[#888888] hover:text-[#7E92A1]">
                  <span class="text-xl leading-none">📝</span>
-                 <span class="text-[10px] font-bold leading-none">清單</span>
-            </button>
-
-            <div class="absolute left-1/2 bottom-0.5 transform -translate-x-1/2 flex items-center bg-[#F4F6F8] pl-1.5 pr-4 py-1.5 rounded-full border border-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] gap-3 z-20">
-                 <button id="center-add-btn" class="prominent-integrated-btn shadow-md hover:scale-105 transition-transform" style="margin: 0;">＋</button>
-                 
-                 <div class="w-[1px] h-4 bg-[#D1D5DB]"></div>
-
-                 <button id="split-expense-btn" class="flex flex-row items-center justify-center gap-1 text-[#5F6368] hover:text-[#8F9E8B]">
-                     <span class="text-base leading-none">💰</span>
-                     <span class="text-[11px] font-bold leading-none">花費</span>
-                 </button>
-            </div>
-
+                 <span class="text-[12px] font-bold leading-none">清單</span>
+             </button>
+             
+             <div class="flex-none px-2">
+                 <button id="center-add-btn" class="prominent-integrated-btn shadow-md">＋</button>
+             </div>
+             
+             <button id="split-expense-btn" class="flex-1 flex flex-row items-center justify-center gap-2 text-[#888888] hover:text-[#8F9E8B]">
+                 <span class="text-xl leading-none">💰</span>
+                 <span class="text-[12px] font-bold leading-none">花費</span>
+             </button>
+        </div>
+    </div>
             <div class="w-8"></div>
         </div>
     </div>
@@ -911,6 +909,7 @@
     </script>
 </body>
 </html>
+
 
 
 
