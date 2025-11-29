@@ -20,7 +20,17 @@
         #app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background-color: white; padding-top: 165px; padding-bottom: 140px; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         
         /* --- Header 固定區 --- */
-        header { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background-color: rgba(255, 255, 255, 0.98); backdrop-filter: blur(5px); z-index: 50; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        header { 
+            position: fixed; 
+            top: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 100%; 
+            max-width: 500px; 
+            background-color: #ffffff; /* 純白背景 */
+            z-index: 50; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
         #trip-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237E92A1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right center; background-repeat: no-repeat; background-size: 1.25em 1.25em; -webkit-appearance: none; appearance: none; background-color: transparent; font-weight: 800; color: #4A4B4D; border: none; padding-right: 1.5rem; cursor: pointer; }
         #trip-select:focus { outline: none; }
         #header-day-date-container { padding-bottom: 0px; margin-top: 8px; margin-bottom: 1px; line-height: 1.2; }
@@ -32,18 +42,69 @@
         #rate-display-label { font-size: 0.85rem; font-weight: bold; color: #7E92A1; line-height: 20px; }
         #bar-calc-result { font-size: 0.7rem; font-weight: bold; color: #7E92A1; }
 
-        /* --- 行程卡片 (Trip Card) --- */
-        .trip-card { width: 100%; margin-bottom: 0.75rem; position: relative; min-height: 85px; display: flex; }
+        /* --- 行程卡片 (Trip Card) & 串連線 (Timeline) --- */
+        
+        /* 外層容器：建立堆疊環境 */
+        .trip-card { 
+            width: 100%; 
+            margin-bottom: 0.75rem; 
+            position: relative; 
+            min-height: 85px; 
+            display: flex; 
+            z-index: 0; /* 關鍵：建立局部堆疊 context，防止子元素跑到父層背景下 */
+        }
+
+        /* 串連線 (Pseudo-element) - 莫蘭迪咖啡色 */
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            left: 28px; /* 56px (w-14) 的一半，對齊 icon 中心 */
+            top: -20px; 
+            bottom: -20px; 
+            width: 2px;
+            /* 調整顏色為莫蘭迪咖啡色 (Morandi Coffee) */
+            background-color: #998A7E; 
+            z-index: -1; /* 設為 -1，確保在 visual-wrapper 的下面 */
+            transform: translateX(-50%);
+        }
+        
+        /* 第一張卡片的線不要向上凸出 */
+        .trip-card:first-child::before { top: 42px; }
+        /* 最後一張卡片的線不要向下凸出 */
+        .trip-card:last-child::before { bottom: auto; height: 100%; }
+
+        /* 視覺包裹層：白色背景，負責遮擋中間的線 */
+        .trip-card-visual-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: white; /* 必須有背景色才能遮住線 */
+            z-index: 1; /* 比線條 (-1) 高 */
+        }
+
         .swipe-item-container { position: relative; overflow: hidden; border-radius: 0.375rem; margin-bottom: 0.5rem; touch-action: pan-y; }
-        .swipe-item-delete-bg { position: absolute; top: 0; bottom: 0; right: 0; width: 140px; display: flex; align-items: center; justify-content: flex-end; z-index: 1; }
-        .swipe-item-content { position: relative; z-index: 10; background-color: white; transition: transform 0.2s ease-out; transform: translateX(0); width: 100%; display: flex; align-items: stretch; overflow: hidden; }
+        
+        .swipe-item-delete-bg { 
+            position: absolute; top: 0; bottom: 0; right: 0; width: 140px; 
+            display: flex; align-items: center; justify-content: flex-end; 
+            z-index: 0; 
+        }
+        
+        .swipe-item-content { 
+            position: relative; z-index: 10; background-color: white; 
+            transition: transform 0.2s ease-out; transform: translateX(0); 
+            width: 100%; display: flex; align-items: stretch; 
+        }
         
         .card-right-col { 
             display: flex; 
             flex-direction: column; 
-            justify-content: flex-start; /* 靠上 */
-            align-items: flex-start; /* 靠左 */
-            gap: 8px; /* 三行等距 */
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            gap: 8px; 
             width: 95px; min-width: 95px; max-width: 95px; flex: 0 0 95px;
             border-left: none; padding-left: 6px; padding-bottom: 0.25rem; padding-top: 12px; position: relative; 
         }
@@ -183,15 +244,8 @@
 
         window.App = (function() {
             const appId = 'my-trip-app';
-            const firebaseConfig = {
-  apiKey: "AIzaSyCr90WAfj0WxrWaFVa0IPN_vVUFdoiOUeY",
-  authDomain: "travel-compass-314e8.firebaseapp.com",
-  projectId: "travel-compass-314e8",
-  storageBucket: "travel-compass-314e8.firebasestorage.app",
-  messagingSenderId: "1095878291152",
-  appId: "1:1095878291152:web:e664c9454b260d7b3478d5",
-  measurementId: "G-HCYRBD0G55"
-};           
+            const firebaseConfig = { apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28", authDomain: "mytravelplanner-36283.firebaseapp.com", projectId: "mytravelplanner-36283", storageBucket: "mytravelplanner-36283.appspot.com", messagingSenderId: "86504733738", appId: "1:86504733738:web:5167a6a795eb2066f272d" };
+            
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
                 'JP': { name: '日本', currency: 'JPY', localName: '東京', lat: 35.68, lon: 139.76, img: 'japan' }, 
@@ -241,6 +295,7 @@
                 checkAndCreateDefaultLists(tripId); 
             }
 
+            // 修改後的 createTripCard：增加 visualWrapper 與 Timeline 線條結構
             function createTripCard(schedule) {
                 const style = getCardStyle(schedule.Type);
                 const config = CATEGORY_COLORS[schedule.Type] || CATEGORY_COLORS['default'];
@@ -254,7 +309,6 @@
                 }
                 const scheduleJson = JSON.stringify({ ...schedule, Amount: schedule.Amount || 0 });
                 
-                // HTML Layout for members (Grid 2 cols, right aligned)
                 let memberHtml = '';
                 if (members.length > 0) {
                     memberHtml = `<div class="flex flex-wrap justify-end gap-x-1.5 gap-y-0.5 ml-2">`;
@@ -264,16 +318,23 @@
                     memberHtml += `</div>`;
                 }
 
+                // 1. 外層容器 (負責 Timeline 線條)
                 const card = document.createElement('div');
-                card.className = 'trip-card flex w-full mb-3 relative min-h-[75px] rounded-xl overflow-hidden shadow-lg';
+                card.className = 'trip-card flex w-full mb-3 relative min-h-[75px]'; 
                 
+                // 2. 視覺包裹層 (負責圓角、陰影、裁切)
+                const visualWrapper = document.createElement('div');
+                visualWrapper.className = 'trip-card-visual-wrapper';
+
                 const swipeActions = document.createElement('div');
                 swipeActions.className = 'swipe-item-delete-bg';
                 swipeActions.innerHTML = `<button class="px-2 py-1 h-full text-xs font-bold bg-[#7E92A1] text-white" data-action="modify" data-schedule='${scheduleJson}'>修改</button><button class="px-2 py-1 h-full text-xs font-bold bg-[#CB8572] text-white" data-action="delete" data-id="${schedule.id}">刪除</button>`;
-                card.appendChild(swipeActions);
+                
+                // 將動作按鈕加入視覺層
+                visualWrapper.appendChild(swipeActions);
 
                 const content = document.createElement('div');
-                content.className = 'swipe-item-content flex w-full bg-white overflow-hidden relative items-stretch h-full z-10';
+                content.className = 'swipe-item-content flex w-full bg-white relative items-stretch h-full z-10';
                 
                 content.innerHTML = `
                     <div class="${config.bg} w-14 flex-none flex flex-col items-center justify-start gap-2 text-white relative z-10 h-full py-3">
@@ -297,7 +358,11 @@
                         <div class="flex items-center justify-start w-full"><span class="text-[#8F9E8B] font-bold text-[10px]">💰 TWD$${amountTWD.toFixed(0)}</span></div>
                         <div class="flex items-center justify-start w-full"><span class="text-[#888888] font-bold text-[10px]">👫 TWD$${formatCurrency(perPersonTWD)}</span></div>
                     </div>`;
-                card.appendChild(content);
+                
+                // 將內容層加入視覺層
+                visualWrapper.appendChild(content);
+                // 將視覺層加入外層卡片
+                card.appendChild(visualWrapper);
 
                 card.querySelector('.map-link').onclick = (e) => { e.preventDefault(); navigateToMap(schedule.Address || schedule.Location); };
                 card.querySelector('.modify-btn-static').onclick = () => openEditScheduleModal(scheduleJson);
@@ -644,19 +709,6 @@
                 container.appendChild(inner);
             }
 
-            async function updateListItem(l, i, chg) { 
-                try {
-                    const currentItems = Array.isArray(l.items) ? l.items : []; const ni = [...currentItems]; 
-                    if (!ni[i]) ni[i] = {}; ni[i] = {...ni[i], ...chg}; 
-                    await updateDoc(doc(db, `artifacts/${appId}/public/data/Trips/${currentTripId}/Lists/${l.id}`), {items:ni}); 
-                } catch(e) { }
-            }
-
-            async function deleteListItem(l, i) { 
-                const ni=l.items.filter((_,x)=>x!==i); 
-                updateDoc(doc(db, `artifacts/${appId}/public/data/Trips/${currentTripId}/Lists/${l.id}`), {items:ni});
-            }
-
             async function loadExpenseSummary() {
                 if(!currentTripId) return; const snap = await getDocs(collection(db, `artifacts/${appId}/public/data/Trips/${currentTripId}/Schedules`));
                 let total=0, types={}, mems={};
@@ -694,10 +746,8 @@
                     const app = initializeApp(firebaseConfig); db = getFirestore(app); auth = getAuth(app); 
                     const userCred = await signInAnonymously(auth); currentUser = userCred.user;
                     
-                    // 修正 Modal Container 定位問題
                     document.querySelectorAll('.modal-overlay > div').forEach(el => el.style.position = 'relative');
 
-                    // 填充 HTML 內容
                     const addScheduleModalContent = document.querySelector('#add-schedule-modal > div');
                     if(addScheduleModalContent) {
                         addScheduleModalContent.innerHTML = `
@@ -727,7 +777,7 @@
                                             <label class="block compact-label">成員</label>
                                             <button type="button" id="add-member-btn" class="ml-[115px] text-xl font-bold text-[#7E92A1] hover:text-[#64748B] transition-colors leading-none">+</button>
                                              <div class="flex items-center ml-4">
-                                                </div>
+                                               </div>
                                         </div>
                                         <div id="form-members-container" class="space-y-1"></div>
                                     </div>
@@ -848,11 +898,9 @@
                     
                     document.getElementById('settings-add-member-btn').onclick = () => addSettingsMemberInput();
                     
-                    // --- 補上：行程視窗中的新增成員按鈕監聽器 ---
                     const addMemBtn = document.getElementById('add-member-btn');
                     if(addMemBtn) addMemBtn.onclick = () => addMemberInput();
 
-                    // --- 關鍵修改：設定儲存按鈕 (自動更新所有行程成員：新增/刪除) ---
                     document.getElementById('settings-modal-save-btn').onclick = async () => {
                         const newName = document.getElementById('settings-trip-name').value;
                         const newCountry = document.getElementById('settings-trip-country').value;
@@ -881,7 +929,6 @@
                                     const sData = scheduleDoc.data();
                                     let currentSchedMembers = sData.members || [];
                                     
-                                    // 1. 處理刪除：過濾掉被移除的成員
                                     if (removedMembers.length > 0) {
                                         currentSchedMembers = currentSchedMembers.filter(m => {
                                             const name = typeof m === 'string' ? m : m.name;
@@ -889,7 +936,6 @@
                                         });
                                     }
 
-                                    // 2. 處理新增：加入新成員
                                     const membersToAdd = addedMembers.map(name => ({ name: name, amount: null }));
                                     const finalMembers = [...currentSchedMembers, ...membersToAdd];
 
@@ -914,4 +960,3 @@
     </script>
 </body>
 </html>
-
