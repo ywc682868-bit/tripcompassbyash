@@ -52,17 +52,18 @@
             position: relative; 
         }
         
-        /* 置中的垂直分隔線 */
+        /* 置中的垂直分隔線 (top:0, bottom:0 拉到最長) */
         .card-right-col::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 5%;    
-            bottom: 5%; 
+            top: 0;    /* 頂端 */
+            bottom: 0; /* 底端 */
             width: 1px;
-            background-color: #C0C0C0;
+            background-color: #C0C0C0; 
         }
 
+        /* 增加間距 gap: 10px */
         .info-block-content { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 10px; height: 100%; width: 100%; margin-top: 4px; }
         .info-block-content > div { justify-content: flex-start !important; }
         .card-static-actions { display: none; gap: 8px; margin-bottom: 4px; padding-left: 0.5rem; width: 100%; justify-content: flex-start; }
@@ -177,8 +178,6 @@
 
         window.App = (function() {
             const appId = 'my-trip-app';
-            
-            // --- 修正：使用正確的 Firebase Config ---
             const firebaseConfig = {
                 apiKey: "AIzaSyCr90WAfj0WxrWaFVa0IPN_vVUFdoiOUeY",
                 authDomain: "travel-compass-314e8.firebaseapp.com",
@@ -188,6 +187,8 @@
                 appId: "1:1095878291152:web:e664c9454b260d7b3478d5",
                 measurementId: "G-HCYRBD0G55"
             };
+            
+            // 移除錯誤的 Analytics 初始化代碼
             
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
