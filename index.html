@@ -177,7 +177,19 @@
 
         window.App = (function() {
             const appId = 'my-trip-app';
-            const firebaseConfig = { apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28", authDomain: "mytravelplanner-36283.firebaseapp.com", projectId: "mytravelplanner-36283", storageBucket: "mytravelplanner-36283.appspot.com", messagingSenderId: "86504733738", appId: "1:86504733738:web:5167a6a795eb2066f272d" };
+            const firebaseConfig = {
+  apiKey: "AIzaSyCr90WAfj0WxrWaFVa0IPN_vVUFdoiOUeY",
+  authDomain: "travel-compass-314e8.firebaseapp.com",
+  projectId: "travel-compass-314e8",
+  storageBucket: "travel-compass-314e8.firebasestorage.app",
+  messagingSenderId: "1095878291152",
+  appId: "1:1095878291152:web:e664c9454b260d7b3478d5",
+  measurementId: "G-HCYRBD0G55"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
             
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
@@ -901,4 +913,5 @@
     </script>
 </body>
 </html>
+
 
