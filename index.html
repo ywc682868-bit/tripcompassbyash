@@ -134,13 +134,11 @@
         </div>
     </div>
 
-<div id="combined-bottom-bar">
+    <div id="combined-bottom-bar">
         <div id="currency-display-row" class="flex w-full border-b border-gray-100 pb-2 mb-1 mt-1.5" style="flex-wrap: nowrap !important;">
-            
             <div id="rate-display-container" class="flex items-center justify-center border-r border-gray-100" style="width: 50% !important; flex: 0 0 50% !important; border-right: 1px solid #f3f4f6 !important;">
                 <span id="rate-display-label">匯率 ≈ ...</span> 
             </div>
-
             <div class="flex items-center justify-start gap-0.5 pl-3" style="width: 50% !important; flex: 0 0 50% !important;">
                 <select id="bar-calc-currency" class="bg-gray-50 border border-[#E0E0E0] rounded p-0.5 text-[10px] font-bold text-[#5F6368] h-6 w-10 text-center appearance-none cursor-pointer">
                     <option value="USD">USD</option><option value="JPY">JPY</option><option value="KRW">KRW</option><option value="CNY">CNY</option><option value="GBP">GBP</option>
@@ -153,7 +151,6 @@
         </div>
 
         <div class="flex justify-between items-center w-full px-2 py-1.5">
-             
              <button id="btn-lists" class="flex-1 flex flex-row items-center justify-center gap-2 text-[#888888] hover:text-[#7E92A1]">
                  <span class="text-xl leading-none">📝</span>
                  <span class="text-[12px] font-bold leading-none">清單</span>
@@ -169,7 +166,8 @@
              </button>
         </div>
     </div>
-        </div>    <div id="add-schedule-modal" class="modal-overlay hidden">
+
+    <div id="add-schedule-modal" class="modal-overlay hidden">
         <div class="bg-white rounded-xl shadow-2xl p-3 w-11/12 max-w-sm max-h-[90vh] overflow-y-auto relative"></div>
     </div>
     <div id="lists-modal" class="modal-overlay hidden"><div class="bg-white rounded-xl shadow-2xl p-4 w-11/12 max-w-sm h-[80vh] flex flex-col relative"><h3 class="text-base font-bold mb-2 flex justify-between items-center flex-shrink-0 text-[#4A4B4D]">清單<button id="lists-modal-close-btn" class="text-[#A9A9A9] hover:text-[#5F6368] text-xl leading-none">×</button></h3><div id="list-tabs" class="flex gap-1 border-b border-gray-100 mb-2 overflow-x-auto no-scrollbar flex-shrink-0"></div><div id="list-content" class="flex-grow overflow-y-auto flex flex-col relative"></div></div></div>
@@ -186,6 +184,7 @@
         window.App = (function() {
             const appId = 'my-trip-app';
             const firebaseConfig = { apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28", authDomain: "mytravelplanner-36283.firebaseapp.com", projectId: "mytravelplanner-36283", storageBucket: "mytravelplanner-36283.appspot.com", messagingSenderId: "86504733738", appId: "1:86504733738:web:5167a6a795eb2066f272d" };
+            
             const COUNTRY_CONFIG = { 
                 'USA': { name: '美國', currency: 'USD', localName: 'New York', lat: 40.71, lon: -74.00, img: 'usa' }, 
                 'JP': { name: '日本', currency: 'JPY', localName: '東京', lat: 35.68, lon: 139.76, img: 'japan' }, 
@@ -908,9 +907,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
