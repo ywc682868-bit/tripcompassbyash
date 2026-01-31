@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-touch-icon" href="icon.png">
-    <title>Trip Compass</title>
+    <title>Trip Compass Family</title>
     <link rel="icon" type="image/png" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -231,7 +231,7 @@
         import { getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         window.App = (function() {
-            const appId = 'trip-compass-ash';
+            const appId = 'my-trip-app-family';
             const firebaseConfig = {
                 apiKey: "AIzaSyDx2yrJ3YUe93A-JdgJPtZChLvylCEht28",
                 authDomain: "mytravelplanner-36283.firebaseapp.com",
@@ -1051,7 +1051,18 @@
                             members: trip.members || [] 
                         });
                     };
-                    document.getElementById('settings-btn').onclick = openSettingsModal;
+
+                    // --- 修改處：日曆圖示點擊邏輯 ---
+                    document.getElementById('settings-btn').onclick = () => {
+                        // 如果目前沒有計畫，點擊日曆圖示直接開啟「新增計畫」視窗
+                        if (!currentTripId || !tripData[currentTripId]) {
+                            openNewTripModal();
+                        } else {
+                            // 若已有計畫，則進入設定頁面
+                            openSettingsModal();
+                        }
+                    };
+
                     document.getElementById('btn-lists').onclick = loadLists;
                     document.getElementById('lists-modal-close-btn').onclick = () => document.getElementById('lists-modal').style.display='none';
                     document.getElementById('split-expense-btn').onclick = loadExpenseSummary;
@@ -1066,4 +1077,3 @@
     </script>
 </body>
 </html>
-
