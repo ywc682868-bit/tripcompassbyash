@@ -280,12 +280,6 @@
                     let dString = diffDaysTrip === 0 ? 'D-0' : (diffDaysTrip > 0 ? `D+${diffDaysTrip + 1}` : `D${diffDaysTrip}`);
                     tripCountdownHtml = `<span class="ml-2 text-[#7E92A1] text-xs font-bold tracking-wide">🛫 ${dString}</span>`;
                 }
-                const anniversary = new Date('2025-08-01T00:00:00');
-                const diffTimeLove = today.getTime() - anniversary.getTime();
-                const diffDaysLove = Math.floor(diffTimeLove / (1000 * 60 * 60 * 24)) + 1;
-                let loveHtml = !isNaN(diffDaysLove) ? `<span class="ml-2 text-[#D4A5A5] text-xs font-extrabold tracking-wide">❤️ ${diffDaysLove}天</span>` : '';
-                document.getElementById('header-day-date-display').innerHTML = `${dateStr}${tripCountdownHtml}${loveHtml}`;
-            }
 
             async function updateHeaderInfo() {
                 const trip = tripData[currentTripId]; if (!trip) return;
@@ -1077,3 +1071,4 @@
     </script>
 </body>
 </html>
+
