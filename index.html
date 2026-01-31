@@ -266,7 +266,7 @@
             function formatCurrency(value) { if (typeof value !== 'number') value = parseFloat(value); if (isNaN(value) || value === 0) return '0'; return value.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1'); }
             async function fetchExchangeRate(baseCurrency) { const fallback = { 'USD': 32.5, 'JPY': 0.215, 'KRW': 0.023, 'GBP': 41.2, 'CNY': 4.5, 'TW': 1 }; if (!baseCurrency || baseCurrency === 'TW') return 1; try { const r = await fetch(`https://open.er-api.com/v6/latest/${baseCurrency === 'TW' ? 'TWD' : baseCurrency}`); const d = await r.json(); if (d && d.rates && d.rates.TWD) return d.rates.TWD; } catch (e) {} return fallback[baseCurrency] || 1; }
 
-            // --- 更新 Header ---
+            // --- 更新 Header (已移除紀念日顯示) ---
             function updateHeaderDateWithDDay(d) {
                 if (!d) return;
                 const dateStr = formatDateForHeader(d);
@@ -280,6 +280,9 @@
                     let dString = diffDaysTrip === 0 ? 'D-0' : (diffDaysTrip > 0 ? `D+${diffDaysTrip + 1}` : `D${diffDaysTrip}`);
                     tripCountdownHtml = `<span class="ml-2 text-[#7E92A1] text-xs font-bold tracking-wide">🛫 ${dString}</span>`;
                 }
+                // 原有的紀念日 (loveHtml) 邏輯已刪除
+                document.getElementById('header-day-date-display').innerHTML = `${dateStr}${tripCountdownHtml}`;
+            }
 
             async function updateHeaderInfo() {
                 const trip = tripData[currentTripId]; if (!trip) return;
@@ -1071,4 +1074,3 @@
     </script>
 </body>
 </html>
-
