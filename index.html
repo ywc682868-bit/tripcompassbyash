@@ -648,17 +648,26 @@
                     <h3 class="text-base font-bold mb-2 text-[#4A4B4D] pr-8 truncate"><span id="add-schedule-modal-title">${s.Location || '編輯行程'}</span></h3>
                     <button id="modal-close-btn" class="absolute top-3 right-3 text-[#A9A9A9] text-2xl leading-none">×</button>
                     <form id="add-schedule-form" class="space-y-2">
-                        <div class="grid grid-cols-3 gap-1.5"> 
-                            <div><label class="compact-label block text-left">日期</label><input type="date" id="form-date" class="compact-input w-full rounded border" value="${s.Date||''}"></div> 
-                            <div><label class="compact-label block text-left">時間</label><input type="time" id="form-time" class="compact-input w-full rounded border" value="${s.Time||''}"></div>
-                            <div><label class="compact-label block text-left">類型</label><select id="form-type" class="compact-input w-full rounded border">
-                                <option value="location" ${s.Type==='location'?'selected':''}>📍 景點</option>
-                                <option value="restaurant" ${s.Type==='restaurant'?'selected':''}>🍽️ 餐廳</option>
-                                <option value="coffee" ${s.Type==='coffee'?'selected':''}>☕ 咖啡</option>
-                                <option value="accommodation" ${s.Type==='accommodation'?'selected':''}>🛏️ 住宿</option>
-                                <option value="交通" ${s.Type==='交通'?'selected':''}>🚗 交通</option>
-                                <option value="shopping" ${s.Type==='shopping'?'selected':''}>🛍️ 購物</option>
-                            </select></div>
+                        <div class="flex gap-5 w-full">
+                            <div class="w-[36%] min-w-0">
+                                <label class="compact-label block">日期</label>
+                                <input type="date" id="form-date" class="compact-input w-full rounded border h-[32px] text-[12px] px-1" value="${s.Date||''}">
+                            </div> 
+                            <div class="w-[28%] min-w-0">
+                                <label class="compact-label block">時間</label>
+                                <input type="time" id="form-time" class="compact-input w-full rounded border h-[32px] text-[12px] px-1" value="${s.Time||''}">
+                            </div>
+                            <div class="w-[32%] min-w-0">
+                                <label class="compact-label block">類型</label>
+                                <select id="form-type" class="compact-input w-full rounded border h-[34px] text-[12px] px-0.5">
+                                    <option value="location" ${s.Type==='location'?'selected':''}>📍景點</option>
+                                    <option value="restaurant" ${s.Type==='restaurant'?'selected':''}>🍽️餐廳</option>
+                                    <option value="coffee" ${s.Type==='coffee'?'selected':''}>☕咖啡</option>
+                                    <option value="accommodation" ${s.Type==='accommodation'?'selected':''}>🛏️住宿</option>
+                                    <option value="交通" ${s.Type==='交通'?'selected':''}>🚗交通</option>
+                                    <option value="shopping" ${s.Type==='shopping'?'selected':''}>🛍️購物</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="flex gap-2 items-center">
                             <div class="flex-grow"><label class="compact-label">地點</label><input type="text" id="form-location" class="compact-input w-full rounded border" value="${s.Location||''}"></div>
@@ -701,7 +710,6 @@
                 refreshModalTotals();
                 modal.style.display = 'flex';
             }
-
             function addMemberInput(name='', amt='', isPayer=false, method='cash', fee='') {
                 const d = document.createElement('div'); 
                 d.className = 'member-row flex items-center w-full gap-2 border-b pb-1 last:border-0';
@@ -1087,6 +1095,7 @@
     </script>
 </body>
 </html>
+
 
 
 
